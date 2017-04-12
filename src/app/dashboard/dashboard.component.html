@@ -1,3 +1,17 @@
-<p>
-  dashboard works!
-</p>
+<div class="row">
+  <main class="col-sm-12 col-md-12 pt-3">
+    <h4>Welcome  to HHRR</h4>
+
+    <h6>Last Employees</h6>
+
+    <section class="row text-center placeholders">
+      <div class="col-6 col-sm-3 placeholder" *ngFor="let employee of employees">
+        <img src="data:image/gif;base64,R0lGODlhAQABAIABAAJ12AAAACwAAAAAAQABAAACAkQBADs=" width="200" height="200" class="img-fluid rounded-circle" alt="Generic placeholder thumbnail">
+        <h4>{{employee.first_name }} {{employee.middle_name }}</h4>
+        <div class="text-muted">{{employee.role}}</div>
+      </div>
+    </section>
+
+  </main>
+
+</div>
