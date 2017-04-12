@@ -12,10 +12,13 @@ body {
  * Typography
  */
 
-h4 {
+h4{
   margin-bottom: 20px;
   padding-bottom: 9px;
   border-bottom: 1px solid #eee;
+}
+h2.second-container {
+  border-bottom: 1px solid #fff;
 }
 
 /*
@@ -64,4 +67,8 @@ h4 {
 .placeholder img {
   padding-top: 1.5rem;
   padding-bottom: 1.5rem;
+}
+
+.hidden{
+  display: none !important;
 }

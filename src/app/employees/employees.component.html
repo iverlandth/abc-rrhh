@@ -13,17 +13,16 @@
           <th>#</th>
           <th>Name</th>
           <th>Role</th>
-          <th>Options</th>
+          <th class="text-center">Options</th>
         </tr>
         </thead>
         <tbody>
-
         <tr *ngFor="let employee of employees" (click)="onSelect(employee)"
             [class.table-success]="employee === selectedEmployee">
           <td>{{employee.id}}</td>
           <td>{{employee.first_name}} {{employee.middle_name}} {{employee.last_name}}</td>
           <td>{{employee.role}}</td>
-          <td>
+          <td class="text-center">
             <button class="btn btn-danger btn-sm delete" (click)="delete(employee); $event.stopPropagation()" data-toggle="tooltip"  title="Delete">x</button>
           </td>
         </tr>
@@ -35,7 +34,7 @@
     <div class="row">
       <div class="col-md-12">
         <form *ngIf="!selectedEmployee">
-          <h2>Add Employee</h2>
+          <h2 class="second-container">Add Employee</h2>
           <div class="form-group">
             <label>First Name</label>
             <input class="form-control" #userFirstName placeholder="Enter First Name" />
@@ -56,8 +55,6 @@
               <option value="Developer">Developer</option>
             </select>-->
           </div>
-
-
           <div class="text-right">
             <button class="btn btn-outline-success" (click)="add(userFirstName.value,userMiddleName.value,userLastName.value,userRole.value); userFirstName.value='';userMiddleName.value='';userLastName.value='';userRole.value=''">
               Add
@@ -66,22 +63,34 @@
         </form>
 
         <div *ngIf="selectedEmployee">
-          <h2>{{selectedEmployee.first_name}} details!</h2>
+          <h2 class="second-container">{{selectedEmployee.first_name}} details! <button class="btn btn-outline-warning btn-sm float-right" [class.hidden]="isEditEmployee"  (click)="edit()">Edit</button></h2>
           <div class="form-group">
-            <label>id: </label>{{selectedEmployee.id}}</div>
+            <label>id: </label>
+            <strong>
+              {{selectedEmployee.id}}
+            </strong>
+          </div>
           <div class="form-group">
             <label>First Name: </label>
-            <input  class="form-control" [(ngModel)]="selectedEmployee.first_name" placeholder="First Name" />
+            <strong [class.hidden]="isEditEmployee">{{selectedEmployee.first_name}}</strong>
+            <input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="selectedEmployee.first_name" placeholder="First Name" />
           </div>
           <div class="form-group">
             <label>Middle Name: </label>
-            <input  class="form-control" [(ngModel)]="selectedEmployee.middle_name" placeholder="Middle Name" />
+            <strong [class.hidden]="isEditEmployee">{{selectedEmployee.middle_name}}</strong>
+            <input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="selectedEmployee.middle_name" placeholder="Middle Name" />
           </div>
           <div class="form-group">
             <label>Last Name: </label>
-            <input  class="form-control" [(ngModel)]="selectedEmployee.last_name" placeholder="Last Name" />
+            <strong [class.hidden]="isEditEmployee">{{selectedEmployee.last_name}}</strong>
+            <input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="selectedEmployee.last_name" placeholder="Last Name" />
           </div>
-          <button class="btn btn-outline-warning float-right" (click)="save()">Save</button>
+          <div class="form-group">
+            <label>Role</label>
+            <strong [class.hidden]="isEditEmployee">{{selectedEmployee.role}}</strong>
+            <input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="selectedEmployee.role" placeholder="Role" />
+          </div>
+          <button class="btn btn-outline-success float-right" [class.hidden]="!isEditEmployee" (click)="save()">Save</button>
         </div>
       </div>
     </div>

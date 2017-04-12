@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { Router }            from '@angular/router';
+import {Component, OnInit} from '@angular/core';
+import {Router}            from '@angular/router';
 
 import {Employee} from "./employee";
 import {EmployeeService} from "./employee.service";
@@ -14,10 +14,11 @@ export class EmployeesComponent implements OnInit {
   employees: Employee[];
   employee: Employee;
   selectedEmployee: Employee;
+  isEditEmployee = false;
 
-  constructor(
-    private employeeService: EmployeeService,
-    private router: Router) { }
+  constructor(private employeeService: EmployeeService,
+              private router: Router) {
+  }
 
   getEmployees(): void {
     this.employeeService
@@ -32,7 +33,7 @@ export class EmployeesComponent implements OnInit {
     last_name = last_name.trim();
     role = role.trim();
 
-    if (!first_name && !middle_name && !last_name && !role) {
+    if (!first_name || !middle_name || !last_name || !role) {
       return;
     }
 
@@ -48,13 +49,16 @@ export class EmployeesComponent implements OnInit {
       .delete(employee.id)
       .then(() => {
         this.employees = this.employees.filter(h => h !== employee);
-        if (this.selectedEmployee === employee) { this.selectedEmployee = null; }
+        if (this.selectedEmployee === employee) {
+          this.selectedEmployee = null;
+        }
       });
+    this.isEditEmployee = false;
   }
 
   save(): void {
     this.employeeService.update(this.employee).then();
-    this.selectedEmployee = null;
+    this.isEditEmployee = false;
   }
 
   ngOnInit(): void {
@@ -64,9 +68,15 @@ export class EmployeesComponent implements OnInit {
   onSelect(employee: Employee): void {
     this.selectedEmployee = employee;
     this.employee = employee;
+    this.isEditEmployee = false;
   }
-  new(): void{
+
+  new(): void {
     this.selectedEmployee = null;
+  }
+
+  edit(): void {
+    this.isEditEmployee = true;
   }
 
   gotoDetail(): void {
