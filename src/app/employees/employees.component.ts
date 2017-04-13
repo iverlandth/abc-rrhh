@@ -13,11 +13,14 @@ import {EmployeeService} from "./employee.service";
 export class EmployeesComponent implements OnInit {
   employees: Employee[];
   employee: Employee;
-  selectedEmployee: Employee;
   isEditEmployee = false;
 
   constructor(private employeeService: EmployeeService,
               private router: Router) {
+  }
+
+  ngOnInit(): void {
+    this.getEmployees();
   }
 
   getEmployees(): void {
@@ -26,7 +29,11 @@ export class EmployeesComponent implements OnInit {
       .then(employees => this.employees = employees);
   }
 
-  add(first_name: string, middle_name: string, last_name: string, role: string): void {
+  new(): void {
+    this.employee = null;
+  }
+
+  save(first_name: string, middle_name: string, last_name: string, role: string): void {
 
     first_name = first_name.trim();
     middle_name = middle_name.trim();
@@ -40,8 +47,23 @@ export class EmployeesComponent implements OnInit {
     this.employeeService.create(first_name, middle_name, last_name, role)
       .then(employee => {
         this.employees.push(employee);
-        this.selectedEmployee = null;
+        this.employee = null;
       });
+  }
+
+  show(employee: Employee): void {
+    this.employee = employee;
+    this.employee = employee;
+    this.isEditEmployee = false;
+  }
+
+  edit(): void {
+    this.isEditEmployee = true;
+  }
+
+  update(): void {
+    this.employeeService.update(this.employee).then();
+    this.isEditEmployee = false;
   }
 
   delete(employee: Employee): void {
@@ -49,39 +71,10 @@ export class EmployeesComponent implements OnInit {
       .delete(employee.id)
       .then(() => {
         this.employees = this.employees.filter(h => h !== employee);
-        if (this.selectedEmployee === employee) {
-          this.selectedEmployee = null;
+        if (this.employee === employee) {
+          this.employee = null;
         }
       });
     this.isEditEmployee = false;
   }
-
-  save(): void {
-    this.employeeService.update(this.employee).then();
-    this.isEditEmployee = false;
-  }
-
-  ngOnInit(): void {
-    this.getEmployees();
-  }
-
-  onSelect(employee: Employee): void {
-    this.selectedEmployee = employee;
-    this.employee = employee;
-    this.isEditEmployee = false;
-  }
-
-  new(): void {
-    this.selectedEmployee = null;
-  }
-
-  edit(): void {
-    this.isEditEmployee = true;
-  }
-
-  gotoDetail(): void {
-    this.router.navigate(['/detail', this.selectedEmployee.id]);
-  }
-
-
 }

@@ -17,18 +17,6 @@ export class EmployeeService {
       .toPromise()
       .then(response => response.json().data as Employee[])
       .catch(this.handleError);
-    /*return this.http.get(`${this.employeesUrl}`)
-      .toPromise()
-      .then(response => [{id: 11, first_name: "Fusce", middle_name: 'Nec', last_name: 'Mr. Nice', role: 'Developer'}] as Employee[])
-      .catch(this.handleError);*/
-  }
-
-  getEmployee(id: number): Promise<Employee> {
-    const url = `${this.employeesUrl}/${id}`;
-    return this.http.get(url)
-      .toPromise()
-      .then(response => response.json().data as Employee)
-      .catch(this.handleError);
   }
 
   create(first_name: string, middle_name: string, last_name: string, role: string): Promise<Employee> {
@@ -41,6 +29,14 @@ export class EmployeeService {
       }), {headers: this.headers})
       .toPromise()
       .then(res => res.json().data as Employee)
+      .catch(this.handleError);
+  }
+
+  show(id: number): Promise<Employee> {
+    const url = `${this.employeesUrl}/${id}`;
+    return this.http.get(url)
+      .toPromise()
+      .then(response => response.json().data as Employee)
       .catch(this.handleError);
   }
 
@@ -63,7 +59,7 @@ export class EmployeeService {
 
 
   private handleError(error: any): Promise<any> {
-    console.error('An error occurred', error); // for demo purposes only
+    console.error('An error occurred', error);
     return Promise.reject(error.message || error);
   }
 }

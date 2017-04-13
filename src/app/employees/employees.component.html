@@ -17,13 +17,13 @@
         </tr>
         </thead>
         <tbody>
-        <tr *ngFor="let employee of employees" (click)="onSelect(employee)"
-            [class.table-success]="employee === selectedEmployee">
-          <td>{{employee.id}}</td>
-          <td>{{employee.first_name}} {{employee.middle_name}} {{employee.last_name}}</td>
-          <td>{{employee.role}}</td>
+        <tr *ngFor="let _employee of employees" (click)="show(_employee)"
+            [class.table-success]="employee === _employee">
+          <td>{{_employee.id}}</td>
+          <td>{{_employee.first_name}} {{_employee.middle_name}} {{_employee.last_name}}</td>
+          <td>{{_employee.role}}</td>
           <td class="text-center">
-            <button class="btn btn-danger btn-sm delete" (click)="delete(employee); $event.stopPropagation()" data-toggle="tooltip"  title="Delete">x</button>
+            <button class="btn btn-danger btn-sm delete" (click)="delete(_employee); $event.stopPropagation()" data-toggle="tooltip"  title="Delete">x</button>
           </td>
         </tr>
         </tbody>
@@ -33,7 +33,7 @@
   <nav class="col-sm-5 offset-sm-7  col-md-4 offset-md-8 hidden-xs-down bg-faded sidebar">
     <div class="row">
       <div class="col-md-12">
-        <form *ngIf="!selectedEmployee">
+        <form *ngIf="!employee">
           <h2 class="second-container">Add Employee</h2>
           <div class="form-group">
             <label>First Name</label>
@@ -49,24 +49,23 @@
           </div>
           <div class="form-group">
             <label>Role</label>
-            <!--<input class="form-control" #userRole placeholder="Enter Role" />-->
             <select class="form-control" [(ngModel)]="userRole"  name="sel2">
-              <option [selected]="true">Select a role</option>
+              <option select="true">Select a role</option>
               <option value="PM">PM</option>
               <option value="Developer">Developer</option>
             </select>
           </div>
           <div class="text-right">
-            <button class="btn btn-outline-success" (click)="add(userFirstName.value,userMiddleName.value,userLastName.value,userRole); userFirstName.value='';userMiddleName.value='';userLastName.value=''">
+            <button class="btn btn-outline-success" (click)="save(userFirstName.value,userMiddleName.value,userLastName.value,userRole); userFirstName.value='';userMiddleName.value='';userLastName.value=''">
               Add
             </button>
           </div>
         </form>
 
-        <div *ngIf="selectedEmployee">
+        <div *ngIf="employee">
           <h2 class="second-container">{{employee.first_name}} details!
             <button class="btn btn-outline-warning btn-sm float-right" [class.hidden]="isEditEmployee"  (click)="edit()">Edit</button>
-            <button class="btn btn-outline-success btn-sm float-right" [class.hidden]="!isEditEmployee" (click)="save()">Save</button>
+            <button class="btn btn-outline-success btn-sm float-right" [class.hidden]="!isEditEmployee" (click)="update()">Save</button>
           </h2>
           <div class="form-group">
             <label>id: </label>
@@ -92,7 +91,6 @@
           <div class="form-group">
             <label>Role</label>
             <strong [class.hidden]="isEditEmployee">{{employee.role}}</strong>
-            <!--<input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="employee.role" placeholder="Role" />-->
             <select class="form-control"  [class.hidden]="!isEditEmployee" [(ngModel)]="employee.role"  name="sel2">
               <option value="PM">PM</option>
               <option value="Developer">Developer</option>
