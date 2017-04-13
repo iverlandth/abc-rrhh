@@ -1,7 +1,9 @@
 export class Employee {
-  id: number;
-  first_name: string;
-  middle_name: string;
-  last_name: string;
-  role: string;
+
+  constructor(public id: number,
+              public first_name: string,
+              public middle_name: string,
+              public last_name: string,
+              public role: string) {}
+
 }

@@ -19,13 +19,14 @@ export class EmployeeService {
       .catch(this.handleError);
   }
 
-  create(first_name: string, middle_name: string, last_name: string, role: string): Promise<Employee> {
+  create(employee: Employee): Promise<Employee> {
+    console.log(employee.first_name);
     return this.http
       .post(`${this.employeesUrl}`, JSON.stringify({
-        first_name: first_name,
-        middle_name: middle_name,
-        last_name: last_name,
-        role: role
+        first_name: employee.first_name,
+        middle_name: employee.middle_name,
+        last_name: employee.last_name,
+        role: employee.role
       }), {headers: this.headers})
       .toPromise()
       .then(res => res.json().data as Employee)

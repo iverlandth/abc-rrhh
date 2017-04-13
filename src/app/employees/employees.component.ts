@@ -3,6 +3,7 @@ import {Router}            from '@angular/router';
 
 import {Employee} from "./employee";
 import {EmployeeService} from "./employee.service";
+import {EmployeeFormComponent} from "./employee-form.component";
 
 @Component({
   selector: 'app-employees',
@@ -11,6 +12,7 @@ import {EmployeeService} from "./employee.service";
 })
 
 export class EmployeesComponent implements OnInit {
+  roles = ['PM', 'Developer'];
   employees: Employee[];
   employee: Employee;
   isEditEmployee = false;
@@ -21,6 +23,7 @@ export class EmployeesComponent implements OnInit {
 
   ngOnInit(): void {
     this.getEmployees();
+    this.new();
   }
 
   getEmployees(): void {
@@ -30,24 +33,24 @@ export class EmployeesComponent implements OnInit {
   }
 
   new(): void {
-    this.employee = null;
+    this.employee = new Employee(null, '', '', '', this.roles[0]);
   }
 
-  save(first_name: string, middle_name: string, last_name: string, role: string): void {
+  save(): void {
+    this.employee.first_name = this.employee.first_name.trim();
+    this.employee.middle_name = this.employee.middle_name.trim();
+    this.employee.last_name = this.employee.last_name.trim();
+    this.employee.role = this.employee.role.trim();
 
-    first_name = first_name.trim();
-    middle_name = middle_name.trim();
-    last_name = last_name.trim();
-    role = role.trim();
-
-    if (!first_name || !middle_name || !last_name || !role) {
+    if (!this.employee.first_name || !this.employee.middle_name || !this.employee.last_name || !this.employee.role) {
       return;
     }
-
-    this.employeeService.create(first_name, middle_name, last_name, role)
+    console.log(this.employee.role);
+    this.employeeService.create(this.employee)
       .then(employee => {
         this.employees.push(employee);
-        this.employee = null;
+        this.employee = employee;
+        this.isEditEmployee = false;
       });
   }
 
@@ -62,8 +65,9 @@ export class EmployeesComponent implements OnInit {
   }
 
   update(): void {
-    this.employeeService.update(this.employee).then();
-    this.isEditEmployee = false;
+    this.employeeService.update(this.employee).then(()=> {
+      this.isEditEmployee = false;
+    });
   }
 
   delete(employee: Employee): void {
@@ -72,7 +76,7 @@ export class EmployeesComponent implements OnInit {
       .then(() => {
         this.employees = this.employees.filter(h => h !== employee);
         if (this.employee === employee) {
-          this.employee = null;
+          this.new();
         }
       });
     this.isEditEmployee = false;

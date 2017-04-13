@@ -33,39 +33,52 @@
   <nav class="col-sm-5 offset-sm-7  col-md-4 offset-md-8 hidden-xs-down bg-faded sidebar">
     <div class="row">
       <div class="col-md-12">
-        <form *ngIf="!employee">
+        <button class="btn btn-outline-success btn-sm float-right" [class.hidden]="!isEditEmployee" (click)="update()">Save</button>
+
+        <form *ngIf="(employee && !employee.id || isEditEmployee)" (ngSubmit)="save()" #employeeForm="ngForm">
           <h2 class="second-container">Add Employee</h2>
-          <div class="form-group">
-            <label>First Name</label>
-            <input class="form-control" #userFirstName placeholder="Enter First Name" />
+          <div class="form-group" [class.has-danger]="!(employeeFirstName.valid || employeeFirstName.pristine)">
+            <label class="form-control-label">First Name</label>
+            <input class="form-control" id="first_name" required [(ngModel)]="employee.first_name"
+                   name="first_name" #employeeFirstName="ngModel" placeholder="Enter First Name">
+            <div [hidden]="employeeFirstName.valid || employeeFirstName.pristine" class="form-control-feedback">
+              First Name is required
+            </div>
           </div>
-          <div class="form-group">
-            <label>Middle Name</label>
-            <input class="form-control" #userMiddleName placeholder="Enter Middle Name" />
+          <div class="form-group" [class.has-danger]="!(employeeMiddleName.valid || employeeMiddleName.pristine)">
+            <label class="form-control-label">Middle Name</label>
+            <input class="form-control" id="middle_name" required [(ngModel)]="employee.middle_name"
+                   name="middle_name" #employeeMiddleName="ngModel"  placeholder="Enter Middle Name" />
+            <div [hidden]="employeeMiddleName.valid || employeeMiddleName.pristine" class="form-control-feedback">
+              Middle Name is required
+            </div>
           </div>
-          <div class="form-group">
-            <label>Last Name</label>
-            <input class="form-control" #userLastName placeholder="Enter Last Name" />
+          <div class="form-group" [class.has-danger]="!(employeeLastName.valid || employeeLastName.pristine)">
+            <label class="form-control-label">Last Name</label>
+            <input class="form-control" id="last_name" required [(ngModel)]="employee.last_name"
+                   name="last_name" #employeeLastName="ngModel" placeholder="Enter Last Name" />
+            <div [hidden]="employeeLastName.valid || employeeLastName.pristine" class="form-control-feedback">
+              Last Name is required
+            </div>
           </div>
-          <div class="form-group">
-            <label>Role</label>
-            <select class="form-control" [(ngModel)]="userRole"  name="sel2">
-              <option select="true">Select a role</option>
-              <option value="PM">PM</option>
-              <option value="Developer">Developer</option>
+          <div class="form-group" [class.has-danger]="!(employeeRole.valid || employeeRole.pristine)">
+            <label class="form-control-label">Role</label>
+            <select class="form-control" id="role" required [(ngModel)]="employee.role" name="role"
+                    #employeeRole="ngModel">
+              <option *ngFor="let role of roles" [value]="role">{{role}}</option>
             </select>
+            <div [hidden]="employeeRole.valid || employeeRole.pristine" class="form-control-feedback">
+              Role is required
+            </div>
           </div>
-          <div class="text-right">
-            <button class="btn btn-outline-success" (click)="save(userFirstName.value,userMiddleName.value,userLastName.value,userRole); userFirstName.value='';userMiddleName.value='';userLastName.value=''">
-              Add
-            </button>
+          <div class="text-right" [class.hidden]="employee && employee.id" >
+            <button type="submit" class="btn btn-success" [disabled]="!employeeForm.form.valid">Submit</button>
           </div>
         </form>
 
-        <div *ngIf="employee">
+        <div *ngIf="employee && employee.id && !isEditEmployee">
           <h2 class="second-container">{{employee.first_name}} details!
             <button class="btn btn-outline-warning btn-sm float-right" [class.hidden]="isEditEmployee"  (click)="edit()">Edit</button>
-            <button class="btn btn-outline-success btn-sm float-right" [class.hidden]="!isEditEmployee" (click)="update()">Save</button>
           </h2>
           <div class="form-group">
             <label>id: </label>
@@ -76,25 +89,18 @@
           <div class="form-group">
             <label>First Name: </label>
             <strong [class.hidden]="isEditEmployee">{{employee.first_name}}</strong>
-            <input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="employee.first_name" placeholder="First Name" />
           </div>
           <div class="form-group">
             <label>Middle Name: </label>
             <strong [class.hidden]="isEditEmployee">{{employee.middle_name}}</strong>
-            <input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="employee.middle_name" placeholder="Middle Name" />
           </div>
           <div class="form-group">
             <label>Last Name: </label>
             <strong [class.hidden]="isEditEmployee">{{employee.last_name}}</strong>
-            <input  class="form-control" [class.hidden]="!isEditEmployee" [(ngModel)]="employee.last_name" placeholder="Last Name" />
           </div>
           <div class="form-group">
             <label>Role</label>
             <strong [class.hidden]="isEditEmployee">{{employee.role}}</strong>
-            <select class="form-control"  [class.hidden]="!isEditEmployee" [(ngModel)]="employee.role"  name="sel2">
-              <option value="PM">PM</option>
-              <option value="Developer">Developer</option>
-            </select>
           </div>
         </div>
       </div>

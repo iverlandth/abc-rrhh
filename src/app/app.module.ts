@@ -14,19 +14,22 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {EmployeeService} from "./employees/employee.service";
 import {EmployeesComponent} from "./employees/employees.component";
+import {EmployeeFormComponent} from "./employees/employee-form.component";
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    EmployeesComponent
+    EmployeesComponent,
+    EmployeeFormComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule
+    AppRoutingModule,
+    FormsModule
   ],
   providers: [EmployeeService],
   bootstrap: [AppComponent]
