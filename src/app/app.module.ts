@@ -28,8 +28,7 @@ import {EmployeeFormComponent} from "./employees/employee-form.component";
     FormsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule,
-    FormsModule
+    AppRoutingModule
   ],
   providers: [EmployeeService],
   bootstrap: [AppComponent]
