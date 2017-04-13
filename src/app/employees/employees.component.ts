@@ -3,7 +3,6 @@ import {Router}            from '@angular/router';
 
 import {Employee} from "./employee";
 import {EmployeeService} from "./employee.service";
-import {EmployeeFormComponent} from "./employee-form.component";
 
 @Component({
   selector: 'app-employees',
@@ -12,7 +11,6 @@ import {EmployeeFormComponent} from "./employee-form.component";
 })
 
 export class EmployeesComponent implements OnInit {
-  roles = ['PM', 'Developer'];
   employees: Employee[];
   employee: Employee;
   isEditEmployee = false;
@@ -33,7 +31,7 @@ export class EmployeesComponent implements OnInit {
   }
 
   new(): void {
-    this.employee = new Employee(null, '', '', '', this.roles[0]);
+    this.employee = new Employee();
   }
 
   save(): void {
@@ -68,17 +66,5 @@ export class EmployeesComponent implements OnInit {
     this.employeeService.update(this.employee).then(()=> {
       this.isEditEmployee = false;
     });
-  }
-
-  delete(employee: Employee): void {
-    this.employeeService
-      .delete(employee.id)
-      .then(() => {
-        this.employees = this.employees.filter(h => h !== employee);
-        if (this.employee === employee) {
-          this.new();
-        }
-      });
-    this.isEditEmployee = false;
   }
 }

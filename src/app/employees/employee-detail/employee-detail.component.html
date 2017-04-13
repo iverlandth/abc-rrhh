@@ -1,0 +1,28 @@
+<div *ngIf="employee">
+  <h2 class="second-container">{{employee.first_name}} details!
+    <button class="btn btn-outline-warning btn-sm float-right" [class.hidden]="isEditEmployee"  (click)="edit()">Edit</button>
+  </h2>
+  <div class="form-group">
+    <label>id: </label>
+    <strong>
+      {{employee.id}}
+    </strong>
+  </div>
+  <div class="form-group">
+    <label>First Name: </label>
+    <strong [class.hidden]="isEditEmployee">{{employee.first_name}}</strong>
+  </div>
+  <div class="form-group">
+    <label>Middle Name: </label>
+    <strong [class.hidden]="isEditEmployee">{{employee.middle_name}}</strong>
+  </div>
+  <div class="form-group">
+    <label>Last Name: </label>
+    <strong [class.hidden]="isEditEmployee">{{employee.last_name}}</strong>
+  </div>
+  <div class="form-group">
+    <label>Role</label>
+    <strong [class.hidden]="isEditEmployee">{{employee.role}}</strong>
+  </div>
+
+</div>

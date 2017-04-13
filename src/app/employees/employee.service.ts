@@ -12,6 +12,14 @@ export class EmployeeService {
   constructor(private http: Http) {
   }
 
+  getEmployee(id: number): Promise<Employee> {
+    const url = `${this.employeesUrl}/${id}`;
+    return this.http.get(url)
+      .toPromise()
+      .then(response => response.json().data as Employee)
+      .catch(this.handleError);
+  }
+
   getEmployees(): Promise<Employee[]> {
     return this.http.get(`${this.employeesUrl}`)
       .toPromise()
@@ -50,7 +58,7 @@ export class EmployeeService {
       .catch(this.handleError);
   }
 
-  delete(id: number): Promise<void> {
+  destroy(id: number): Promise<void> {
     const url = `${this.employeesUrl}/${id}`;
     return this.http.delete(url, {headers: this.headers})
       .toPromise()

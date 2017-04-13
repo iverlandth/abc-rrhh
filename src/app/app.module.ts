@@ -14,14 +14,18 @@ import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {EmployeeService} from "./employees/employee.service";
 import {EmployeesComponent} from "./employees/employees.component";
-import {EmployeeFormComponent} from "./employees/employee-form.component";
+import {EmployeeFormComponent} from "./employees/employee-form/employee-form.component";
+import { EmployeeListComponent } from './employees/employee-list/employee-list.component';
+import { EmployeeDetailComponent } from './employees/employee-detail/employee-detail.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
     EmployeesComponent,
-    EmployeeFormComponent
+    EmployeeFormComponent,
+    EmployeeListComponent,
+    EmployeeDetailComponent
   ],
   imports: [
     BrowserModule,
