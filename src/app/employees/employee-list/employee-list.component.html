@@ -1,7 +1,7 @@
 <h2>
   Employees
   <span class="float-right">
-        <button class="btn btn-success btn-sm" (click)="new()">New Employee</button>
+        <button class="btn btn-success btn-sm" (click)="add()">New Employee</button>
       </span>
 </h2>
 <div class="table-responsive">
@@ -18,11 +18,33 @@
       <td>{{_employee.first_name}} {{_employee.middle_name}} {{_employee.last_name}}</td>
       <td>{{_employee.role}}</td>
       <td class="text-center">
-        <button class="btn btn-warning btn-sm" (click)="goTo(_employee); $event.stopPropagation()">Show</button>
-        <button class="btn btn-warning btn-sm" (click)="editTo(_employee); $event.stopPropagation()">Edit</button>
-        <button class="btn btn-danger btn-sm" (click)="destroy(_employee); $event.stopPropagation()">x</button>
+        <button class="btn btn-warning btn-sm" (click)="showEmployee(_employee); $event.stopPropagation()">Show</button>
+        <button class="btn btn-warning btn-sm" (click)="editEmployee(_employee); $event.stopPropagation()">Edit</button>
+        <button class="btn btn-danger btn-sm" (click)="confirmDestroy(_employee); $event.stopPropagation()">x</button>
       </td>
     </tr>
     </tbody>
   </table>
+</div>
+
+<app-employee-detail >Detail Employee.</app-employee-detail>
+<app-employee-form >Form Employee </app-employee-form>
+
+<div bsModal #confirmModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title pull-left">Confirm Delete Employee</h5>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelConfirm()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>
+          Are you sure?
+        </p>
+        <button class="btn btn-danger btn-sm" (click)="destroy(employee); $event.stopPropagation()">Delete</button>
+      </div>
+    </div>
+  </div>
 </div>

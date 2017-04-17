@@ -13,16 +13,17 @@ import { InMemoryDataService }  from './in-memory-data.service';
 import { AppComponent } from './app.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import {EmployeeService} from "./employees/employee.service";
-import {EmployeesComponent} from "./employees/employees.component";
 import {EmployeeFormComponent} from "./employees/employee-form/employee-form.component";
 import { EmployeeListComponent } from './employees/employee-list/employee-list.component';
 import { EmployeeDetailComponent } from './employees/employee-detail/employee-detail.component';
+
+import {ModalModule, PaginationModule} from "ngx-bootstrap";
+import {EmployeeReturnService} from "./employees/employee-return.service";
 
 @NgModule({
   declarations: [
     AppComponent,
     DashboardComponent,
-    EmployeesComponent,
     EmployeeFormComponent,
     EmployeeListComponent,
     EmployeeDetailComponent
@@ -32,9 +33,11 @@ import { EmployeeDetailComponent } from './employees/employee-detail/employee-de
     FormsModule,
     HttpModule,
     InMemoryWebApiModule.forRoot(InMemoryDataService),
-    AppRoutingModule
+    AppRoutingModule,
+    PaginationModule.forRoot(),
+    ModalModule.forRoot()
   ],
-  providers: [EmployeeService],
+  providers: [EmployeeService, EmployeeReturnService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

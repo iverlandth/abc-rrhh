@@ -1,13 +1,20 @@
 import {Injectable} from '@angular/core';
-import {Headers, Http} from '@angular/http';
+import {Headers, Http, Response} from '@angular/http';
 
 import 'rxjs/add/operator/toPromise';
+import { Observable } from 'rxjs/Observable';
+import {Observer} from 'rxjs/Observer';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
+
 import {Employee} from './employee';
+import {PaginatedResult, Pagination} from "../shared/interfaces";
 
 @Injectable()
 export class EmployeeService {
   private headers = new Headers({'Content-Type': 'application/json'});
   private employeesUrl = 'api/employees';
+
 
   constructor(private http: Http) {
   }
@@ -20,11 +27,42 @@ export class EmployeeService {
       .catch(this.handleError);
   }
 
-  getEmployees(): Promise<Employee[]> {
-    return this.http.get(`${this.employeesUrl}`)
+  getEmployees(page?: number, itemsPerPage?: number): Observable<PaginatedResult<Employee[]>> {
+    let peginatedResult: PaginatedResult<Employee[]> = new PaginatedResult<Employee[]>();
+
+    let headers = new Headers();
+    if (page != null && itemsPerPage != null) {
+      headers.append('Pagination', page + ',' + itemsPerPage);
+    }
+    console.log(headers);
+
+    return this.http.get(this.employeesUrl, {
+      headers: headers
+    }).map((res: Response) => {
+        console.log(res.headers.keys());
+
+        peginatedResult.result = res.json().data;
+        console.log(peginatedResult.result);
+
+        if (res.headers.get("Pagination") != null) {
+          //var pagination = JSON.parse(res.headers.get("Pagination"));
+          console.log('DEE',JSON.parse(res.headers.get("Pagination")));
+          let paginationHeader: Pagination = this.getSerialized<Pagination>(JSON.parse(res.headers.get("Pagination")));
+          console.log(paginationHeader);
+          peginatedResult.pagination = paginationHeader;
+        }
+        return peginatedResult;
+      })
+      .catch(this.handleError);
+
+    /*return this.http.get(this.employeesUrl, {headers: headers})
+      .map((res: Response)=>{
+        peginatedResult.result = res.json();
+
+        }).catch(this.handleError());
       .toPromise()
       .then(response => response.json().data as Employee[])
-      .catch(this.handleError);
+      .catch(this.handleError);*/
   }
 
   create(employee: Employee): Promise<Employee> {
@@ -64,6 +102,10 @@ export class EmployeeService {
       .toPromise()
       .then(() => null)
       .catch(this.handleError);
+  }
+
+  getSerialized<T>(arg: any): T {
+    return <T>JSON.parse(JSON.stringify(arg));
   }
 
 

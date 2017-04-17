@@ -1,43 +1,55 @@
+<div bsModal #formModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title pull-left" [hidden]="employee && employee.id">Add Employee</h4>
+        <h4 class="modal-title pull-left" [hidden]="employee && !employee.id">Edit Employee</h4>
+        <button type="button" class="close pull-right" aria-label="Close" (click)="cancelForm()">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form *ngIf="(employee)" (ngSubmit)="submit()" #employeeForm="ngForm">
+          <div class="form-group" [class.has-danger]="!(employeeFirstName.valid || employeeFirstName.pristine)">
+            <label class="form-control-label">First Name</label>
+            <input class="form-control" id="first_name" required [(ngModel)]="employee.first_name"
+                   name="first_name" #employeeFirstName="ngModel" placeholder="Enter First Name">
+            <div [hidden]="employeeFirstName.valid || employeeFirstName.pristine" class="form-control-feedback">
+              First Name is required
+            </div>
+          </div>
+          <div class="form-group" [class.has-danger]="!(employeeMiddleName.valid || employeeMiddleName.pristine)">
+            <label class="form-control-label">Middle Name</label>
+            <input class="form-control" id="middle_name" required [(ngModel)]="employee.middle_name"
+                   name="middle_name" #employeeMiddleName="ngModel"  placeholder="Enter Middle Name" />
+            <div [hidden]="employeeMiddleName.valid || employeeMiddleName.pristine" class="form-control-feedback">
+              Middle Name is required
+            </div>
+          </div>
+          <div class="form-group" [class.has-danger]="!(employeeLastName.valid || employeeLastName.pristine)">
+            <label class="form-control-label">Last Name</label>
+            <input class="form-control" id="last_name" required [(ngModel)]="employee.last_name"
+                   name="last_name" #employeeLastName="ngModel" placeholder="Enter Last Name" />
+            <div [hidden]="employeeLastName.valid || employeeLastName.pristine" class="form-control-feedback">
+              Last Name is required
+            </div>
+          </div>
+          <div class="form-group" [class.has-danger]="!(employeeRole.valid || employeeRole.pristine)">
+            <label class="form-control-label">Role</label>
+            <select class="form-control" id="role" required [(ngModel)]="employee.role" name="role"
+                    #employeeRole="ngModel">
+              <option *ngFor="let role of roles" [value]="role">{{role}}</option>
+            </select>
+            <div [hidden]="employeeRole.valid || employeeRole.pristine" class="form-control-feedback">
+              Role is required
+            </div>
+          </div>
+          <div class="text-right">
+            <button type="submit" class="btn btn-success" [disabled]="!employeeForm.form.valid">Submit</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
 
-<button class="btn btn-outline-success btn-sm float-right" [class.hidden]="!isEditEmployee" (click)="update()">Save</button>
-
-<form *ngIf="(employee)" (ngSubmit)="save()" #employeeForm="ngForm">
-  <h2 class="second-container">Add Employee</h2>
-  <div class="form-group" [class.has-danger]="!(employeeFirstName.valid || employeeFirstName.pristine)">
-    <label class="form-control-label">First Name</label>
-    <input class="form-control" id="first_name" required [(ngModel)]="employee.first_name"
-           name="first_name" #employeeFirstName="ngModel" placeholder="Enter First Name">
-    <div [hidden]="employeeFirstName.valid || employeeFirstName.pristine" class="form-control-feedback">
-      First Name is required
-    </div>
-  </div>
-  <div class="form-group" [class.has-danger]="!(employeeMiddleName.valid || employeeMiddleName.pristine)">
-    <label class="form-control-label">Middle Name</label>
-    <input class="form-control" id="middle_name" required [(ngModel)]="employee.middle_name"
-           name="middle_name" #employeeMiddleName="ngModel"  placeholder="Enter Middle Name" />
-    <div [hidden]="employeeMiddleName.valid || employeeMiddleName.pristine" class="form-control-feedback">
-      Middle Name is required
-    </div>
-  </div>
-  <div class="form-group" [class.has-danger]="!(employeeLastName.valid || employeeLastName.pristine)">
-    <label class="form-control-label">Last Name</label>
-    <input class="form-control" id="last_name" required [(ngModel)]="employee.last_name"
-           name="last_name" #employeeLastName="ngModel" placeholder="Enter Last Name" />
-    <div [hidden]="employeeLastName.valid || employeeLastName.pristine" class="form-control-feedback">
-      Last Name is required
-    </div>
-  </div>
-  <div class="form-group" [class.has-danger]="!(employeeRole.valid || employeeRole.pristine)">
-    <label class="form-control-label">Role</label>
-    <select class="form-control" id="role" required [(ngModel)]="employee.role" name="role"
-            #employeeRole="ngModel">
-      <option *ngFor="let role of roles" [value]="role">{{role}}</option>
-    </select>
-    <div [hidden]="employeeRole.valid || employeeRole.pristine" class="form-control-feedback">
-      Role is required
-    </div>
-  </div>
-  <div class="text-right" [class.hidden]="employee && employee.id" >
-    <button type="submit" class="btn btn-success" [disabled]="!employeeForm.form.valid">Submit</button>
-  </div>
-</form>

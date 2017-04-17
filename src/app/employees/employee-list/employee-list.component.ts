@@ -1,50 +1,84 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit, ViewChild, Directive} from '@angular/core';
 import {Router}            from '@angular/router';
 
 import {Employee} from "../employee";
 import {EmployeeService} from "../employee.service";
-import {EmployeesComponent} from "../employees.component";
 import {EmployeeDetailComponent} from "../employee-detail/employee-detail.component";
+import {Pagination, PaginatedResult} from '../../shared/interfaces';
+import {ModalDirective} from "ngx-bootstrap";
+import {EmployeeFormComponent} from "../employee-form/employee-form.component";
 
 @Component({
   selector: 'app-employee-list',
   templateUrl: './employee-list.component.html',
-  styleUrls: ['./employee-list.component.css']
+  styleUrls: ['./employee-list.component.css'],
 })
 export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
-  employeeDetail: EmployeeDetailComponent;
+  employeeDestroy: Employee;
 
-  constructor(
-    private employeeService: EmployeeService,
-    private employeesComponent: EmployeesComponent,
-    private router: Router
-  ) { }
+  public totalItems: number = 10;
+  public currentPage: number = 4;
+  public smallnumPages: number = 0;
+  public itemsPerPage: number = 2;
+
+
+  constructor(private employeeService: EmployeeService,
+              private router: Router) {
+  }
 
   ngOnInit(): void {
-    this.employeeService.getEmployees().then(
-      employees => this.employees = employees);
-  }
-  goTo(employee: Employee){
-    console.log(employee.id);
-    this.router.navigate(['employees/show', employee.id]);
+    this.loadEmployees();
   }
 
-  editTo(employee: Employee){
-    console.log(employee.id);
-    this.router.navigate(['employees/edit', employee.id]);
+  loadEmployees() {
+    this.employeeService.getEmployees(1, 2)
+      .subscribe((res: PaginatedResult<Employee[]>) => {
+          this.employees = res.result;
+          this.totalItems = 10;
+        },
+        error => {
+        })
   }
 
-  destroy(employee: Employee): void {
+  @ViewChild('confirmModal') confirmModal: ModalDirective;
+
+  confirmDestroy(employee: Employee): void {
+    this.employeeDestroy = employee;
+    this.confirmModal.show();
+  }
+  cancelConfirm(): void{
+    this.confirmModal.hide();
+  }
+
+  destroy(): void {
     this.employeeService
-      .destroy(employee.id)
+      .destroy(this.employeeDestroy.id)
       .then(() => {
-        this.employees = this.employees.filter(h => h !== employee);
+        this.employees = this.employees.filter(h => h !== this.employeeDestroy);
       });
+    this.confirmModal.hide();
   }
 
-  new(): void {
-    this.router.navigate(['employees/new']);
+  @ViewChild(EmployeeFormComponent) private employeeForm: EmployeeFormComponent;
+  public add(): void {
+    this.employeeForm.add();
+  }
+
+  public editEmployee(employee: Employee) {
+    this.employeeForm.edit(employee);
+  }
+
+
+  @ViewChild(EmployeeDetailComponent) private employeeComponent: EmployeeDetailComponent;
+  showEmployee(employee: Employee): void {
+    this.employeeComponent.show(employee);
+  }
+
+
+  public pageChanged(event: any): void {
+    console.log('Page changed to: ' + event.page);
+    console.log('Number items per page: ' + event.itemsPerPage);
   }
 }
 
