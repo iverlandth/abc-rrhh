@@ -20,7 +20,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
 
-    this.employeeService.getEmployees(this.currentPage, this.itemsPerPage)
+    this.employeeService.getEmployees(null,this.currentPage, this.itemsPerPage)
       .subscribe((res: PaginatedResult<Employee[]>) => {
           this.employees = res.result;
           //this.totalItems = res.pagination.TotalItems;

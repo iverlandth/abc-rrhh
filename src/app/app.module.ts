@@ -19,6 +19,7 @@ import { EmployeeDetailComponent } from './employees/employee-detail/employee-de
 
 import {ModalModule, PaginationModule} from "ngx-bootstrap";
 import {EmployeeReturnService} from "./employees/employee-return.service";
+import {PagerService} from "./shared/pager.service";
 
 @NgModule({
   declarations: [
@@ -37,7 +38,7 @@ import {EmployeeReturnService} from "./employees/employee-return.service";
     PaginationModule.forRoot(),
     ModalModule.forRoot()
   ],
-  providers: [EmployeeService, EmployeeReturnService],
+  providers: [EmployeeService, EmployeeReturnService, PagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

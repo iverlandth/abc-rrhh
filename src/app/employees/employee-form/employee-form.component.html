@@ -1,9 +1,9 @@
 <div bsModal #formModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-sm">
+  <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title pull-left" [hidden]="employee && employee.id">Add Employee</h4>
-        <h4 class="modal-title pull-left" [hidden]="employee && !employee.id">Edit Employee</h4>
+        <h5 class="modal-title pull-left" [hidden]="employee && employee.id">Add Employee</h5>
+        <h5 class="modal-title pull-left" [hidden]="employee && !employee.id">Edit Employee</h5>
         <button type="button" class="close pull-right" aria-label="Close" (click)="cancelForm()">
           <span aria-hidden="true">&times;</span>
         </button>

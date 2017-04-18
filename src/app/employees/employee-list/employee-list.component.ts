@@ -7,6 +7,7 @@ import {EmployeeDetailComponent} from "../employee-detail/employee-detail.compon
 import {Pagination, PaginatedResult} from '../../shared/interfaces';
 import {ModalDirective} from "ngx-bootstrap";
 import {EmployeeFormComponent} from "../employee-form/employee-form.component";
+import {PagerService} from "../../shared/pager.service";
 
 @Component({
   selector: 'app-employee-list',
@@ -17,29 +18,45 @@ export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
   employeeDestroy: Employee;
 
-  public totalItems: number = 10;
-  public currentPage: number = 4;
-  public smallnumPages: number = 0;
-  public itemsPerPage: number = 2;
+  pager: any = {};
+  pagedItems: any[];
 
 
   constructor(private employeeService: EmployeeService,
-              private router: Router) {
+              private pagerService: PagerService) {
   }
 
   ngOnInit(): void {
     this.loadEmployees();
   }
 
+
   loadEmployees() {
-    this.employeeService.getEmployees(1, 2)
+    this.employeeService.getEmployees(null, 1, 2)
       .subscribe((res: PaginatedResult<Employee[]>) => {
           this.employees = res.result;
-          this.totalItems = 10;
+          this.setPage(1);
         },
         error => {
         })
   }
+
+  filterItem(value) {
+    this.employeeService.getEmployees(value.trim(), 1, 2)
+      .subscribe((res: PaginatedResult<Employee[]>) => {
+          this.employees = res.result;
+          this.setPage(1);
+        },
+        error => {
+          console.log('ERROR');
+        });
+  }
+
+  setPage(page: number) {
+    this.pager = this.pagerService.getPager(this.employees.length, page);
+    this.pagedItems = this.employees.slice(this.pager.startIndex, this.pager.endIndex + 1);
+  }
+
 
   @ViewChild('confirmModal') confirmModal: ModalDirective;
 
@@ -47,7 +64,8 @@ export class EmployeeListComponent implements OnInit {
     this.employeeDestroy = employee;
     this.confirmModal.show();
   }
-  cancelConfirm(): void{
+
+  cancelConfirm(): void {
     this.confirmModal.hide();
   }
 
@@ -56,11 +74,13 @@ export class EmployeeListComponent implements OnInit {
       .destroy(this.employeeDestroy.id)
       .then(() => {
         this.employees = this.employees.filter(h => h !== this.employeeDestroy);
+        this.setPage(this.pager.currentPage);
       });
     this.confirmModal.hide();
   }
 
   @ViewChild(EmployeeFormComponent) private employeeForm: EmployeeFormComponent;
+
   public add(): void {
     this.employeeForm.add();
   }
@@ -71,8 +91,9 @@ export class EmployeeListComponent implements OnInit {
 
 
   @ViewChild(EmployeeDetailComponent) private employeeComponent: EmployeeDetailComponent;
-  showEmployee(employee: Employee): void {
-    this.employeeComponent.show(employee);
+
+  showEmployee(id: number): void {
+    this.employeeComponent.show(id);
   }
 
 

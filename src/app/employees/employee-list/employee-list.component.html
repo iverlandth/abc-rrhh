@@ -2,8 +2,19 @@
   Employees
   <span class="float-right">
         <button class="btn btn-success btn-sm" (click)="add()">New Employee</button>
-      </span>
+  </span>
 </h2>
+<div class="row">
+  <div class="col-md-6 offset-md-6">
+    <div class="form-group row">
+      <label class="col-2 col-form-label">Search:</label>
+      <div class="col-10">
+        <input type="text" #myInput placeholder="Employee name..." [(ngModel)]="name" (input)="filterItem(myInput.value)" class="form-control"/>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div class="table-responsive">
   <table class="table table-striped">
     <thead>
@@ -14,23 +25,44 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let _employee of employees">
+    <tr *ngFor="let _employee of pagedItems" >
       <td>{{_employee.first_name}} {{_employee.middle_name}} {{_employee.last_name}}</td>
       <td>{{_employee.role}}</td>
       <td class="text-center">
-        <button class="btn btn-warning btn-sm" (click)="showEmployee(_employee); $event.stopPropagation()">Show</button>
+        <button class="btn btn-warning btn-sm" (click)="showEmployee(_employee.id); $event.stopPropagation()">Show</button>
         <button class="btn btn-warning btn-sm" (click)="editEmployee(_employee); $event.stopPropagation()">Edit</button>
         <button class="btn btn-danger btn-sm" (click)="confirmDestroy(_employee); $event.stopPropagation()">x</button>
       </td>
     </tr>
     </tbody>
   </table>
+
+  <nav aria-label="...">
+      <ul *ngIf="pager.pages && pager.pages.length" class="pagination justify-content-center">
+        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+          <a (click)="setPage(1)" class="page-link">First</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === 1}" class="page-item">
+          <a (click)="setPage(pager.currentPage - 1)" class="page-link">Previous</a>
+        </li>
+        <li *ngFor="let page of pager.pages" [ngClass]="{active:pager.currentPage === page}" class="page-item">
+          <a (click)="setPage(page)" class="page-link">{{page}}</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+          <a (click)="setPage(pager.currentPage + 1)" class="page-link">Next</a>
+        </li>
+        <li [ngClass]="{disabled:pager.currentPage === pager.totalPages}" class="page-item">
+          <a (click)="setPage(pager.totalPages)" class="page-link">Last</a>
+        </li>
+      </ul>
+  </nav>
 </div>
 
-<app-employee-detail >Detail Employee.</app-employee-detail>
-<app-employee-form >Form Employee </app-employee-form>
+<app-employee-detail>Detail Employee.</app-employee-detail>
+<app-employee-form>Form Employee</app-employee-form>
 
-<div bsModal #confirmModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+<div bsModal #confirmModal="bs-modal" class="modal" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+     aria-hidden="true">
   <div class="modal-dialog modal-sm">
     <div class="modal-content">
       <div class="modal-header">

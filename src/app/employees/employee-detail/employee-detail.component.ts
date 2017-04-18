@@ -2,6 +2,7 @@ import {Component, OnInit, ViewChild} from '@angular/core';
 
 import {Employee} from "../employee";
 import {ModalDirective} from "ngx-bootstrap";
+import {EmployeeService} from "../employee.service";
 
 @Component({
   selector: 'app-employee-detail',
@@ -13,7 +14,7 @@ export class EmployeeDetailComponent implements OnInit {
 
   @ViewChild('detailModal') public detailModal: ModalDirective;
 
-  constructor() {
+  constructor(private employeeService: EmployeeService) {
   }
 
   ngOnInit() {
@@ -23,9 +24,11 @@ export class EmployeeDetailComponent implements OnInit {
     this.employee = null;
   }
 
-  show(employee: Employee) {
-    this.employee = employee;
-    this.detailModal.show();
+  show(id: number) {
+    this.employeeService.getEmployee(id).then(res =>{
+      this.employee = res;
+      this.detailModal.show();
+    });
   }
 
   cancel(): void {
