@@ -61,7 +61,7 @@ export class EmployeeFormComponent implements OnInit {
 
   edit(employee: Employee): void{
     this.employee = employee;
-    //this.model =  new EmployeeReturn(employee).clone();
+    this.model =  Object.assign({}, this.employee);
     this.formModal.show();
   }
 
