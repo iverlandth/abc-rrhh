@@ -18,8 +18,9 @@ import { EmployeeListComponent } from './employees/employee-list/employee-list.c
 import { EmployeeDetailComponent } from './employees/employee-detail/employee-detail.component';
 
 import {ModalModule, PaginationModule} from "ngx-bootstrap";
-import {EmployeeReturnService} from "./employees/employee-return.service";
 import {PagerService} from "./shared/pager.service";
+import { EmployeeDestroyComponent } from './employees/employee-destroy/employee-destroy.component';
+import { EmployeeComponent } from './employees/employee.component';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,9 @@ import {PagerService} from "./shared/pager.service";
     DashboardComponent,
     EmployeeFormComponent,
     EmployeeListComponent,
-    EmployeeDetailComponent
+    EmployeeDetailComponent,
+    EmployeeDestroyComponent,
+    EmployeeComponent
   ],
   imports: [
     BrowserModule,
@@ -38,7 +41,7 @@ import {PagerService} from "./shared/pager.service";
     PaginationModule.forRoot(),
     ModalModule.forRoot()
   ],
-  providers: [EmployeeService, EmployeeReturnService, PagerService],
+  providers: [EmployeeService, PagerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

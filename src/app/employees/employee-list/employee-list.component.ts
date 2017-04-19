@@ -5,9 +5,9 @@ import {Employee} from "../employee";
 import {EmployeeService} from "../employee.service";
 import {EmployeeDetailComponent} from "../employee-detail/employee-detail.component";
 import {Pagination, PaginatedResult} from '../../shared/interfaces';
-import {ModalDirective} from "ngx-bootstrap";
 import {EmployeeFormComponent} from "../employee-form/employee-form.component";
 import {PagerService} from "../../shared/pager.service";
+import {EmployeeDestroyComponent} from "../employee-destroy/employee-destroy.component";
 
 @Component({
   selector: 'app-employee-list',
@@ -28,14 +28,23 @@ export class EmployeeListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEmployees();
+
   }
 
+
+  changeEmployee(): void {
+    this.loadEmployees();
+  }
 
   loadEmployees() {
     this.employeeService.getEmployees(null, 1, 2)
       .subscribe((res: PaginatedResult<Employee[]>) => {
           this.employees = res.result;
-          this.setPage(1);
+          if (this.pager) {
+            this.setPage(this.pager.currentPage);
+          } else {
+            this.setPage(1);
+          }
         },
         error => {
         })
@@ -58,26 +67,12 @@ export class EmployeeListComponent implements OnInit {
   }
 
 
-  @ViewChild('confirmModal') confirmModal: ModalDirective;
+  @ViewChild(EmployeeDestroyComponent) employeeDestroyComponent: EmployeeDestroyComponent;
 
-  confirmDestroy(employee: Employee): void {
-    this.employeeDestroy = employee;
-    this.confirmModal.show();
+  confirmDestroy(id: number): void {
+    this.employeeDestroyComponent.confirmDestroy(id);
   }
 
-  cancelConfirm(): void {
-    this.confirmModal.hide();
-  }
-
-  destroy(): void {
-    this.employeeService
-      .destroy(this.employeeDestroy.id)
-      .then(() => {
-        this.employees = this.employees.filter(h => h !== this.employeeDestroy);
-        this.setPage(this.pager.currentPage);
-      });
-    this.confirmModal.hide();
-  }
 
   @ViewChild(EmployeeFormComponent) private employeeForm: EmployeeFormComponent;
 
@@ -96,10 +91,5 @@ export class EmployeeListComponent implements OnInit {
     this.employeeComponent.show(id);
   }
 
-
-  public pageChanged(event: any): void {
-    console.log('Page changed to: ' + event.page);
-    console.log('Number items per page: ' + event.itemsPerPage);
-  }
 }
 

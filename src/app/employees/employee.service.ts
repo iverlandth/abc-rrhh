@@ -39,7 +39,7 @@ export class EmployeeService {
     return this.http.get(this.employeesUrl, {
       headers: headers
     }).map((res: Response) => {
-      //console.log(res.headers.keys());
+
       let resultData = res.json().data;
 
       if (!search || !search.length) {
@@ -49,31 +49,11 @@ export class EmployeeService {
           item => item.first_name.toLowerCase().indexOf(search.toLowerCase()) > -1
         );
       }
-
-      /*
-       if (res.headers.get("Pagination") != null) {
-       //var pagination = JSON.parse(res.headers.get("Pagination"));
-       console.log('DEE', JSON.parse(res.headers.get("Pagination")));
-       let paginationHeader: Pagination = this.getSerialized<Pagination>(JSON.parse(res.headers.get("Pagination")));
-       console.log(paginationHeader);
-       peginatedResult.pagination = paginationHeader;
-       }*/
       return peginatedResult;
-    })
-      .catch(this.handleError);
-
-    /*return this.http.get(this.employeesUrl, {headers: headers})
-     .map((res: Response)=>{
-     peginatedResult.result = res.json();
-
-     }).catch(this.handleError());
-     .toPromise()
-     .then(response => response.json().data as Employee[])
-     .catch(this.handleError);*/
+    }).catch(this.handleError);
   }
 
   create(employee: Employee): Promise<Employee> {
-    console.log(employee.first_name);
     return this.http
       .post(`${this.employeesUrl}`, JSON.stringify({
         first_name: employee.first_name,

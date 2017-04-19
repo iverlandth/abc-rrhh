@@ -23,7 +23,6 @@ export class DashboardComponent implements OnInit {
     this.employeeService.getEmployees(null,this.currentPage, this.itemsPerPage)
       .subscribe((res: PaginatedResult<Employee[]>) => {
           this.employees = res.result;
-          //this.totalItems = res.pagination.TotalItems;
         },
         error => {})
   }

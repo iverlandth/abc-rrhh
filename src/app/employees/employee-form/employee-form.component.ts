@@ -1,10 +1,9 @@
 import 'rxjs/add/operator/switchMap';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 
 import {Employee} from "../employee";
 import {EmployeeService} from "../employee.service";
 import {ModalDirective} from "ngx-bootstrap";
-import {EmployeeReturnService} from "../employee-return.service";
 
 @Component({
   selector: 'app-employee-form',
@@ -12,30 +11,34 @@ import {EmployeeReturnService} from "../employee-return.service";
   styleUrls: ['./employee-form.component.css']
 })
 export class EmployeeFormComponent implements OnInit {
-  roles= ['PM', 'Developer'];
+  roles = ['PM', 'Developer'];
   employee: Employee = null;
   private model: Employee;
 
   @ViewChild('formModal') public formModal: ModalDirective;
 
-  constructor(private employeeService: EmployeeService, private employeeReturnService: EmployeeReturnService) {}
+  @Output() changeEmployee: EventEmitter<any> = new EventEmitter();
+
+  constructor(private employeeService: EmployeeService) {
+  }
 
   ngOnInit() {
   }
 
-  add(): void{
+  add(): void {
     this.employee = new Employee();
     this.formModal.show();
   }
-  submit(): void{
-    if (this.employee.id){
+
+  submit(): void {
+    if (this.employee.id) {
       this.update();
-    }else{
+    } else {
       this.save();
     }
   }
 
-  save(): void{
+  save(): void {
     this.employee.first_name = this.employee.first_name.trim();
     this.employee.middle_name = this.employee.middle_name.trim();
     this.employee.last_name = this.employee.last_name.trim();
@@ -46,27 +49,25 @@ export class EmployeeFormComponent implements OnInit {
     }
     this.employeeService.create(this.employee)
       .then(employee => {
-        //this.employees.push(employee);
-        //this.employee = employee;
         this.formModal.hide();
+        this.changeEmployee.emit();
       });
   }
 
   cancelForm(): void {
     this.formModal.hide();
     this.employee = this.model;
-    this.employee = null;
-    //this.employeeReturnService.restoreEmployeeReturn();
+    this.changeEmployee.emit();
   }
 
-  edit(employee: Employee): void{
+  edit(employee: Employee): void {
     this.employee = employee;
-    this.model =  Object.assign({}, this.employee);
+    this.model = Object.assign({}, this.employee);
     this.formModal.show();
   }
 
-  update(): void{
-    this.employeeService.update(this.employee).then(()=> {
+  update(): void {
+    this.employeeService.update(this.employee).then(() => {
       this.formModal.hide();
     });
   }
