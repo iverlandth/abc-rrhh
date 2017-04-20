@@ -4,6 +4,7 @@
         <button class="btn btn-success btn-sm" (click)="add()">New Employee</button>
   </span>
 </h2>
+
 <div class="row">
   <div class="col-md-6 offset-md-6">
     <div class="form-group row">
@@ -25,13 +26,13 @@
     </tr>
     </thead>
     <tbody>
-    <tr *ngFor="let _employee of pagedItems">
-      <td>{{_employee.first_name}} {{_employee.middle_name}} {{_employee.last_name}}</td>
-      <td>{{_employee.role}}</td>
+    <tr *ngFor="let employee of pagedItems">
+      <td>{{employee.first_name}} {{employee.middle_name}} {{employee.last_name}}</td>
+      <td>{{employee.role}}</td>
       <td class="text-center">
-        <button class="btn btn-warning btn-sm" (click)="showEmployee(_employee.id); $event.stopPropagation()">Show</button>
-        <button class="btn btn-warning btn-sm" (click)="editEmployee(_employee); $event.stopPropagation()">Edit</button>
-        <button class="btn btn-danger btn-sm" (click)="confirmDestroy(_employee.id); $event.stopPropagation()">x</button>
+        <button class="btn btn-warning btn-sm" (click)="showEmployee(employee.id); $event.stopPropagation()">Show</button>
+        <button class="btn btn-warning btn-sm" (click)="editEmployee(employee); $event.stopPropagation()">Edit</button>
+        <button class="btn btn-danger btn-sm" (click)="confirmDestroy(employee.id); $event.stopPropagation()">x</button>
       </td>
     </tr>
     </tbody>
@@ -61,4 +62,3 @@
 <app-employee-detail>Detail Employee.</app-employee-detail>
 <app-employee-form (changeEmployee)="changeEmployee($event)">Form Employee</app-employee-form>
 <app-employee-destroy (destroyEmployee)="changeEmployee($event)">Form Employee</app-employee-destroy>
-

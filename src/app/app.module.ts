@@ -26,11 +26,11 @@ import { EmployeeComponent } from './employees/employee.component';
   declarations: [
     AppComponent,
     DashboardComponent,
+    EmployeeComponent,
     EmployeeFormComponent,
     EmployeeListComponent,
     EmployeeDetailComponent,
-    EmployeeDestroyComponent,
-    EmployeeComponent
+    EmployeeDestroyComponent
   ],
   imports: [
     BrowserModule,

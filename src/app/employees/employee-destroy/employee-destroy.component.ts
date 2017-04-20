@@ -2,8 +2,6 @@ import {Component, OnInit, ViewChild, Output, EventEmitter} from '@angular/core'
 import {ModalDirective} from "ngx-bootstrap";
 
 import {EmployeeService} from "../employee.service";
-import {Employee} from "../employee";
-
 
 @Component({
   selector: 'app-employee-destroy',
@@ -15,7 +13,8 @@ export class EmployeeDestroyComponent implements OnInit {
 
   @Output() destroyEmployee: EventEmitter<any> = new EventEmitter();
 
-  constructor(private employeeService: EmployeeService) { }
+  constructor(private employeeService: EmployeeService) {
+  }
 
   ngOnInit() {
   }
@@ -33,7 +32,6 @@ export class EmployeeDestroyComponent implements OnInit {
   }
 
   destroy(): void {
-    console.log(this.employeeDestroyId);
     this.employeeService
       .destroy(this.employeeDestroyId)
       .then(() => {

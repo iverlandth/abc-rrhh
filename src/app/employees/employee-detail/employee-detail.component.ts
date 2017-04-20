@@ -25,7 +25,7 @@ export class EmployeeDetailComponent implements OnInit {
   }
 
   show(id: number) {
-    this.employeeService.getEmployee(id).then(res =>{
+    this.employeeService.getEmployee(id).then(res => {
       this.employee = res;
       this.detailModal.show();
     });

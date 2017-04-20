@@ -1,5 +1,4 @@
 import {Component, OnInit, ViewChild, Directive} from '@angular/core';
-import {Router}            from '@angular/router';
 
 import {Employee} from "../employee";
 import {EmployeeService} from "../employee.service";
@@ -16,7 +15,6 @@ import {EmployeeDestroyComponent} from "../employee-destroy/employee-destroy.com
 })
 export class EmployeeListComponent implements OnInit {
   employees: Employee[] = [];
-  employeeDestroy: Employee;
 
   pager: any = {};
   pagedItems: any[];

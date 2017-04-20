@@ -8,10 +8,3 @@ export class Employee {
   constructor() {}
 
 }
-export class EmployeeReturn{
-  constructor(public employee: Employee){}
-
-  clone() {
-    return new EmployeeReturn(this.employee);
-  }
-}
