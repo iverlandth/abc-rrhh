@@ -8,3 +8,5 @@ export class Employee {
   constructor() {}
 
 }
+
+export const roles = ['PM', 'Developer'];

@@ -1,7 +1,7 @@
 import 'rxjs/add/operator/switchMap';
 import {Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 
-import {Employee} from "../employee";
+import {Employee, roles} from "../employee";
 import {EmployeeService} from "../employee.service";
 import {ModalDirective} from "ngx-bootstrap";
 
@@ -11,7 +11,7 @@ import {ModalDirective} from "ngx-bootstrap";
   styleUrls: ['./employee-form.component.css']
 })
 export class EmployeeFormComponent implements OnInit {
-  roles = ['PM', 'Developer'];
+  roles = roles;
   employee: Employee = null;
   private model: Employee;
 
